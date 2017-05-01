@@ -3,7 +3,7 @@ minetest.set_mapgen_params({mgname = "singlenode"})
 singlenode = {
 	min_pos = {x = -500, y = -30, z = -500 },
 	max_pos = {x =  500, y =  30, z =  500 },
-	node_name = "default:wood"
+	node_name = "default:stone"
 }
 
 minetest.register_on_newplayer(function(player)
