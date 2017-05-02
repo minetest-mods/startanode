@@ -1,10 +1,20 @@
-minetest.set_mapgen_params({mgname = "singlenode"})
-
 singlenode = {
 	min_pos = {x = -500, y = -30, z = -500 },
 	max_pos = {x =  500, y =  30, z =  500 },
 	node_name = "default:stone"
 }
+
+-- support for undernull water
+if minetest.get_modpath("water") then
+	minetest.log("[singlenode] compatibility mode to undernull water")
+	local water_level = minetest.setting_get("water_level") or 0
+	singlenode.min_pos.y = water_level
+	singlenode.max_pos.y = water_level
+else
+	minetest.register_on_mapgen_init(function(mgparams)
+		minetest.set_mapgen_params({mgname="singlenode"})
+	end)
+end
 
 minetest.register_on_newplayer(function(player)
 	local playername = player:get_player_name()
