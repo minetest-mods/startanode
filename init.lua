@@ -1,7 +1,7 @@
 singlenode = {
 	min_pos = {x = -500, y = -30, z = -500 },
 	max_pos = {x =  500, y =  30, z =  500 },
-	node_name = "default:stone"
+	node_name = "mapgen_stone" -- "default:stone"
 }
 
 -- support for undernull water
