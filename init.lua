@@ -4,7 +4,7 @@ Configuration interface.
   Just be sure this mod is in dependency of the other mod
 ]]
 
-singlenode = {
+startanode = {
 	min_pos = {x = -500, y = -30, z = -500 },
 	max_pos = {x =  500, y =  30, z =  500 },
 	node_name = "mapgen_stone", -- "default:stone"
@@ -14,7 +14,7 @@ singlenode = {
 
 -- support for undernull water
 minetest.register_on_mapgen_init(function(mgparams)
-	if singlenode.singlenode_mode then
+	if startanode.singlenode_mode then
 		minetest.set_mapgen_params({mgname="singlenode"})
 	end
 end)
@@ -26,9 +26,9 @@ local function spawn_node(player, pos)
 	-- select new pos if no given
 	if not pos then
 		pos = {
-			x=math.random(singlenode.min_pos.x, singlenode.max_pos.x),
-			y=math.random(singlenode.min_pos.y, singlenode.max_pos.y),
-			z=math.random(singlenode.min_pos.z, singlenode.max_pos.z)
+			x=math.random(startanode.min_pos.x, startanode.max_pos.x),
+			y=math.random(startanode.min_pos.y, startanode.max_pos.y),
+			z=math.random(startanode.min_pos.z, startanode.max_pos.z)
 		}
 	end
 
@@ -49,15 +49,15 @@ local function spawn_node(player, pos)
 
 	local playername = player:get_player_name()
 	minetest.log("Player "..playername.." Node and player spawned at "..minetest.pos_to_string(pos)..". replacing "..node.name)
-	minetest.set_node(pos, {name=singlenode.node_name})
+	minetest.set_node(pos, {name=startanode.node_name})
 	player:setpos({x=pos.x,y=pos.y+2,z=pos.z})
 
 	if minetest.global_exists("sethome") then
 		sethome.set(playername, {x=pos.x,y=pos.y+2,z=pos.z})
 	end
 
-	if singlenode.after_place_func then
-		singlenode.after_place_func(player, pos)
+	if startanode.after_place_func then
+		startanode.after_place_func(player, pos)
 	end
 
 	-- trigger additional actions like filling chest
