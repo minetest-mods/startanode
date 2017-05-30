@@ -67,3 +67,10 @@ end
 minetest.register_on_newplayer(function(player)
 	spawn_node(player, nil)
 end)
+
+-- Respawn allways at home if sethome mod enabled
+if minetest.global_exists("sethome") then
+	minetest.register_on_respawnplayer(function(player)
+		minetest.after(0, sethome.go, player:get_player_name())
+	end)
+end
