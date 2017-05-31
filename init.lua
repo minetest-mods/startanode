@@ -9,7 +9,8 @@ startanode = {
 	max_pos = {x =  500, y =  30, z =  500 },
 	node_name = "mapgen_stone", -- "default:stone"
 	after_place_func = nil, -- function(player, pos) called after the node is placed
-	singlenode_mode = true -- no effect from other mods. Changed too late
+	singlenode_mode = true, -- no effect from other mods. Changed too late
+	enable_bed_respawn = minetest.setting_getbool("enable_bed_respawn") -- disable respawn handling if bed respawn is set
 }
 
 -- support for undernull water
@@ -20,9 +21,7 @@ minetest.register_on_mapgen_init(function(mgparams)
 end)
 
 
-
 local function spawn_node(player, pos)
-
 	-- select new pos if no given
 	if not pos then
 		pos = {
@@ -71,6 +70,14 @@ end)
 -- Respawn allways at home if sethome mod enabled
 if minetest.global_exists("sethome") then
 	minetest.register_on_respawnplayer(function(player)
-		minetest.after(0, sethome.go, player:get_player_name())
+		local playername = player:get_player_name()
+
+		-- Check if the bed spawn position is set for the player and active
+		if minetest.global_exists("beds") and beds.spawn[playername] and
+				startanode.enable_bed_respawn ~= false then
+			return
+		end
+		-- teleport to the home position
+		minetest.after(0, sethome.go, playername)
 	end)
 end
